@@ -4,7 +4,7 @@
 var createSlideshow = function () {
     "use strict";
     // PRIVATE VARIABLES AND FUNCTIONS
-    var timer, play = true, nodes, img, stopSlideShow, displayNextImage, setPlayText;
+    var timer, speed = 2000, play = true, nodes, img, stopSlideShow, displayNextImage, setPlayText;
     
     nodes = { image: null, caption: null };
     img = { cache: [], counter: 0 };
@@ -46,7 +46,7 @@ var createSlideshow = function () {
                 nodes.image = arguments[0];
                 nodes.caption = arguments[1];
             }
-            timer = setInterval(displayNextImage, 2000);
+            timer = setInterval(displayNextImage, speed);
             return this;
         },
         createToggleHandler: function () {
@@ -63,6 +63,22 @@ var createSlideshow = function () {
                 setPlayText(this);
                 // TOGGLE PLAY 'FLAG'
                 play = !play;
+            };
+        },
+        setSpeed: function (milliseconds) {
+            speed = milliseconds;
+        },
+        getSpeed: function () {
+            return speed;
+        },
+        updateSpeed: function () {
+            var me = this;
+            // CLOSURE TO BE USED AS THE CLICK EVENT HANDLER
+            return function () {
+                // 'THIS' IS THE CLICKED BUTTON
+                // 'ME' IS THE OBJECT LITERAL
+                me.setSpeed(parseInt(window.prompt("The current speed is " + me.getSpeed() + ". Please enter a new speed."), 10));
+                timer = setInterval(displayNextImage, speed);
             };
         }
     };
@@ -89,4 +105,5 @@ window.addEventListener("load", function () {
     slideshow.loadImages(slides).startSlideShow($("image"), $("caption"));
     // PAUSE THE SLIDESHOW
     $("play_pause").onclick = slideshow.createToggleHandler();
+    $("set_speed").onclick = slideshow.updateSpeed();
 });
