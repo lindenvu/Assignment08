@@ -78,6 +78,7 @@ var createSlideshow = function () {
                 // 'THIS' IS THE CLICKED BUTTON
                 // 'ME' IS THE OBJECT LITERAL
                 me.setSpeed(parseInt(window.prompt("The current speed is " + me.getSpeed() + ". Please enter a new speed."), 10));
+                clearInterval(timer);
                 timer = setInterval(displayNextImage, speed);
             };
         }
